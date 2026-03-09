@@ -1,0 +1,68 @@
+# 原始 Java 代码
+
+public class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int multiply(int a, int b) {
+        int result = 0;
+        for (int i = 0; i < b; i++) {
+            result = add(result, a);
+        }
+        return result;
+    }
+}
+
+# 翻译结果（Python）
+
+```python
+# 翻译要点说明：
+# 1. 将Java类转换为Python类，移除public访问修饰符（Python默认所有成员都是public的）
+# 2. 将Java的int类型转换为Python的int类型（Python的int是动态类型，无需显式声明）
+# 3. 将Java的for循环转换为Python的for循环，使用range()函数
+# 4. 移除Java的方法返回类型声明（Python使用动态类型）
+# 5. 保持相同的算法逻辑：multiply方法通过重复加法实现乘法
+# 6. 添加了类型提示（Python 3.5+）以提高代码可读性，但这不是必须的
+# 7. 添加了docstring文档字符串，遵循Python的PEP 257规范
+
+class Calculator:
+    """计算器类，提供加法和乘法功能"""
+    
+    def add(self, a: int, b: int) -> int:
+        """加法运算
+        
+        Args:
+            a: 第一个整数
+            b: 第二个整数
+            
+        Returns:
+            两个整数的和
+        """
+        return a + b
+    
+    def multiply(self, a: int, b: int) -> int:
+        """乘法运算（通过重复加法实现）
+        
+        Args:
+            a: 被乘数
+            b: 乘数
+            
+        Returns:
+            两个整数的乘积
+        """
+        result = 0
+        # 使用range(b)循环b次，模拟Java的for循环
+        for _ in range(b):
+            result = self.add(result, a)
+        return result
+
+
+# 关于Java特有特性的Python等价实现建议：
+# 1. synchronized（同步方法）: 可以使用threading.Lock或asyncio.Lock实现
+# 2. final（不可变）: 可以使用@property装饰器或__setattr__方法限制属性修改
+# 3. private/protected: 使用单下划线(_)或双下划线(__)前缀约定
+# 4. 接口/抽象类: 使用abc模块的ABC类和@abstractmethod装饰器
+# 5. 静态方法: 使用@staticmethod装饰器
+# 6. 类方法: 使用@classmethod装饰器
+```

@@ -1,0 +1,27 @@
+# 原始 Java 代码
+
+public int add(int a, int b) { return a + b; }
+
+# 翻译结果（Python）
+
+```python
+# 翻译要点：
+# 1. Java的静态类型声明转换为Python的动态类型
+# 2. 方法定义使用def关键字，无需指定返回类型
+# 3. Python使用缩进而非花括号定义代码块
+# 4. 函数命名遵循Python的snake_case命名约定
+# 5. 添加了类型提示以提升代码可读性（Python 3.5+特性）
+
+def add(a: int, b: int) -> int:
+    """
+    计算两个整数的和
+    
+    Args:
+        a (int): 第一个整数
+        b (int): 第二个整数
+        
+    Returns:
+        int: 两个整数的和
+    """
+    return a + b
+```

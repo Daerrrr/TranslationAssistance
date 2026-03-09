@@ -1,0 +1,40 @@
+# 原始 Java 代码
+
+public class Example {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+
+        int sum = 0;
+        for (int i = 1; i <= 10; i++) {
+            sum += i;
+        }
+        System.out.println("Sum from 1 to 10 is: " + sum);
+    }
+}
+
+# 翻译结果（Python）
+
+```python
+# 翻译要点：
+# 1. Python不需要类定义来包裹主程序，直接使用if __name__ == "__main__"作为程序入口
+# 2. Java的System.out.println()对应Python的print()函数
+# 3. Java的for循环对应Python的for循环，但语法不同
+# 4. Python使用缩进代替Java的花括号
+# 5. 变量声明不需要指定类型，Python是动态类型语言
+
+def main():
+    """主函数，对应Java中的main方法"""
+    print("Hello, World!")
+    
+    sum = 0  # Python不需要声明变量类型
+    # 使用range函数生成1到10的序列，包含10
+    for i in range(1, 11):
+        sum += i
+    
+    # Python支持f-string格式化字符串，更简洁
+    print(f"Sum from 1 to 10 is: {sum}")
+
+# Python的标准程序入口模式
+if __name__ == "__main__":
+    main()
+```

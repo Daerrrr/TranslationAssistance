@@ -1,0 +1,25 @@
+# 原始 Java 代码
+
+public class Hello { public static void main(String[] args) { System.out.println("Hi"); } }
+
+# 翻译结果（Python）
+
+```python
+# 翻译要点说明：
+# 1. Python不需要显式定义类来执行简单脚本，但为保持结构对应，仍定义类
+# 2. Java的main方法对应Python的__main__检查
+# 3. System.out.println()对应Python的print()
+# 4. 遵循Python命名规范（snake_case），但类名保持PascalCase
+# 5. 添加了if __name__ == "__main__": 这是Python的标准入口点模式
+
+class Hello:
+    @staticmethod
+    def main():
+        """对应Java中的main方法"""
+        print("Hi")
+
+
+if __name__ == "__main__":
+    # Python程序的入口点，相当于Java的public static void main(String[] args)
+    Hello.main()
+```
