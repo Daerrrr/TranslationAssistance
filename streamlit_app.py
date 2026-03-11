@@ -212,22 +212,29 @@ with st.sidebar:
     # API 配置
     st.subheader("API 配置")
     
-    # 检查是否配置了 secrets
-    try:
-        import streamlit as st
-        if hasattr(st, 'secrets') and 'deepseek' in st.secrets:
-            st.success("✅ API 密钥已配置")
-        else:
-            st.warning("⚠️ 请在 Secrets 中配置 API 密钥")
-    except:
-        api_key = st.text_input(
+    # 检查是否配置了 secrets（优先从 secrets.toml 读取）
+    api_key = None
+    
+    if hasattr(st, 'secrets') and 'deepseek' in st.secrets:
+        # 从 secrets.toml 读取配置（Streamlit Cloud 环境或本地已配置）
+        api_config = st.secrets['deepseek']
+        api_key = api_config.get('api_key')
+        os.environ["DEEPSEEK_API_KEY"] = api_key
+        os.environ["DEEPSEEK_BASE_URL"] = api_config.get('base_url', 'https://api.deepseek.com')
+        st.success("✅ API 密钥已配置")
+    else:
+        # 本地开发环境，手动输入
+        api_key_input = st.text_input(
             "DeepSeek API 密钥",
             type="password",
             help="请输入有效的 DeepSeek API 密钥"
         )
 
-        if api_key:
-            os.environ["DEEPSEEK_API_KEY"] = api_key
+        if api_key_input:
+            os.environ["DEEPSEEK_API_KEY"] = api_key_input
+            api_key = api_key_input
+        else:
+            st.warning("⚠️ 请在 Secrets 中配置 API 密钥")
 
     # 翻译参数
     st.subheader("翻译参数")
