@@ -3,6 +3,10 @@ import streamlit as st
 import sys
 import os
 
+# 设置默认编码为 UTF-8
+if sys.platform == 'win32':
+    os.environ['PYTHONIOENCODING'] = 'utf-8'
+
 # 添加项目根目录到路径
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -233,6 +237,7 @@ with st.sidebar:
         if api_key_input:
             os.environ["DEEPSEEK_API_KEY"] = api_key_input
             api_key = api_key_input
+            st.success("✅ API 密钥已设置")
         else:
             st.warning("⚠️ 请在 Secrets 中配置 API 密钥")
 

@@ -5,10 +5,20 @@
 2. 配置适配到 LangChain 的 ChatOpenAI，从环境变量加载 DeepSeek API。
 """
 import os
+import sys
 from typing import Optional
 from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
 import httpx
+
+# 设置默认编码为 UTF-8，避免中文处理错误
+if sys.platform == 'win32':
+    try:
+        import locale
+        locale.setlocale(locale.LC_ALL, 'zh_CN.UTF-8')
+    except:
+        pass
+    os.environ['PYTHONIOENCODING'] = 'utf-8'
 
 
 class LangChainConfig(BaseModel):
@@ -37,15 +47,29 @@ class ConfigManager:
 
     def _load_config(self) -> LangChainConfig:
         """从环境变量加载配置，并封装为 LangChainConfig（Pydantic 模型）"""
-        api_key = "sk-47513f93dfbd4082b3c15e51a2d58bb3"
+        api_key = os.getenv("DEEPSEEK_API_KEY", "")
+            
         if not api_key:
-            print("[警告] 未检测到DEEPSEEK_API_KEY环境变量，使用默认测试密钥")
+            print("[警告] 未检测到 DEEPSEEK_API_KEY 环境变量")
             print("   请在运行前设置环境变量：")
             print("   Windows CMD: set DEEPSEEK_API_KEY=你的密钥")
             print("   Windows PowerShell: $env:DEEPSEEK_API_KEY='你的密钥'")
             print("   Linux/macOS: export DEEPSEEK_API_KEY='你的密钥'")
-            api_key = "sk-47513f93dfbd4082b3c15e51a2d58bb3"
-
+            print("   或在 .streamlit/secrets.toml 中配置")
+            # 尝试从 secrets.toml 读取（本地开发）
+            try:
+                import streamlit as st
+                if hasattr(st, 'secrets') and 'deepseek' in st.secrets:
+                    api_key = st.secrets['deepseek'].get('api_key', '')
+                    if api_key:
+                        print("[信息] 已从 secrets.toml 加载 API 密钥")
+            except:
+                pass
+            
+        if not api_key:
+            print("[错误] 未找到有效的 API 密钥，请配置后重试")
+            return None
+    
         return LangChainConfig(
             api_key=api_key,
             base_url="https://api.deepseek.com",
