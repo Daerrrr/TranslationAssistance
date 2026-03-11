@@ -8,6 +8,7 @@ import os
 from typing import Optional
 from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
+import httpx
 
 
 class LangChainConfig(BaseModel):
@@ -56,13 +57,18 @@ class ConfigManager:
         )
 
     def _create_llm(self) -> ChatOpenAI:
-        """创建LangChain LLM实例，用于与DeepSeek API通信"""
+        """创建 LangChain LLM 实例，用于与 DeepSeek API 通信"""
+        # 创建自定义的 httpx 客户端，避免 proxies 参数兼容性问题
+        http_client = httpx.Client(
+            timeout=self.config.timeout,
+            limits=httpx.Limits(max_connections=10)
+        )
+        
         return ChatOpenAI(
             api_key=self.config.api_key,
             base_url=self.config.base_url,
             model=self.config.model,
             temperature=self.config.temperature,
             max_tokens=self.config.max_tokens,
-            timeout=self.config.timeout,
-            max_retries=self.config.max_retries
+            http_client=http_client
         )
